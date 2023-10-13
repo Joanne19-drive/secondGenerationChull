@@ -4,6 +4,7 @@ import com.minji.underground.core.vo.SlackJson;
 import com.minji.underground.core.vo.TrainInfo;
 import com.minji.underground.slack.SlackService;
 import com.minji.underground.subwayInfo.SubwayInfo;
+import com.minji.underground.weatherInfo.WeatherInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,10 +19,12 @@ public class SubwayServiceImpl implements SubwayService {
 
     private final SlackService slackService;
     private final SubwayInfo subwayInfo;
+    private final WeatherInfo weatherInfo;
 
-    public SubwayServiceImpl(SlackService slackService, SubwayInfo subwayInfo) {
+    public SubwayServiceImpl(SlackService slackService, SubwayInfo subwayInfo, WeatherInfo weatherInfo) {
         this.slackService = slackService;
         this.subwayInfo = subwayInfo;
+        this.weatherInfo = weatherInfo;
     }
 
     @Override
@@ -65,8 +68,13 @@ public class SubwayServiceImpl implements SubwayService {
                 String responseText = subwayCongestionData(subwayRequest.get(subwayRequest.size() - 1));
                 slackJson.setResultText(responseText);
                 slackService.sendMessage(responseText);
+            } else if (text.contains("날씨 알려줘")){
+                String responseText = weatherInfo.currentWeather();
+                slackJson.setResultText(responseText);
+                slackService.sendMessage(responseText);
             } else {
                 String responseText = responseAnything(text, slackJson.getUser());
+                slackJson.setResultText(responseText);
                 slackService.sendMessage(responseText);
             }
         }
@@ -118,6 +126,8 @@ public class SubwayServiceImpl implements SubwayService {
         } else if (text.equals("반가워")) {
             return "<@" + userId + "> 님 반가워요";
         }
-        return "귀찮아서 대꾸하기 싫습니다. \n p.s. 제가 대답할 수 있는 단어는 [안녕?, 뭐해?, 정신차려!, 해고 당하고 싶어?, 바보, 윤회, 상화, 승준, 현지, 민지, 비트박스, 메롱, 커리어팀, 달려!, 성공적, 고백에 성공하는 법, 에버랜드에서 재미있게 노는 법, 반가워]입니다.";
+        return "귀찮아서 대꾸하기 싫습니다. \n p.s. 제가 대답할 수 있는 단어는 [안녕?, 뭐해?, 정신차려!, 해고 당하고 싶어?, 바보, 윤회, " +
+                "상화, 승준, 현지, 민지, 비트박스, 메롱, 커리어팀, 달려!, 성공적, 고백에 성공하는 법, 에버랜드에서 재미있게 노는 법, " +
+                "반가워]입니다.";
     }
 }
