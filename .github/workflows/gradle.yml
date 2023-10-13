@@ -44,6 +44,10 @@ jobs:
 
       shell: bash
 
+    - name: build project
+      run: |
+        ./gradlew build -x test
+
     - name: docker login
       uses: docker/login-action@v1
       with:
