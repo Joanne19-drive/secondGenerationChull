@@ -24,8 +24,9 @@ public class WeatherInfo {
         String formatedNow = now.format(formatter);
 
         String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidFcst?serviceKey=" + weatherAppKey +
-                "pageNo=1&numOfRows=10&dataType=json&stnId=108&tmFc=" + formatedNow + "0600";
+                "&pageNo=1&numOfRows=10&dataType=json&stnId=108&tmFc=" + formatedNow + "0600";
 
+        System.out.println(apiUrl);
         Request request = new Request.Builder()
                 .url(apiUrl)
                 .build();
@@ -33,6 +34,7 @@ public class WeatherInfo {
         Response response = client.newCall(request).execute();
 
         String body = response.body().string();
+        System.out.println(body);
         return JsonPath.read(body, "$.response.body.items.item[0].wfSv");
     }
 }
