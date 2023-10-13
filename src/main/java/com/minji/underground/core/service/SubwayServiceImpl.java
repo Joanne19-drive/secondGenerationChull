@@ -11,16 +11,17 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.minji.underground.subwayInfo.SubwayInfo.*;
 
 @Service
 @Transactional
 public class SubwayServiceImpl implements SubwayService {
 
     private final SlackService slackService;
+    private final SubwayInfo subwayInfo;
 
-    public SubwayServiceImpl(SlackService slackService) {
+    public SubwayServiceImpl(SlackService slackService, SubwayInfo subwayInfo) {
         this.slackService = slackService;
+        this.subwayInfo = subwayInfo;
     }
 
     @Override
@@ -28,14 +29,14 @@ public class SubwayServiceImpl implements SubwayService {
         if (stationName.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        List<TrainInfo> arrivingTrains = stationArrival(stationName);
+        List<TrainInfo> arrivingTrains = subwayInfo.stationArrival(stationName);
 
         ArrayList<String> statusMessages = new ArrayList<>();
 
         for (TrainInfo trainInfo : arrivingTrains) {
             String lineName = String.valueOf(trainInfo.lineNum.charAt(3));
             if (trainInfo.live) {
-                String congestionRate = liveSubwayCongestion(lineName, trainInfo.trainNum);
+                String congestionRate = subwayInfo.liveSubwayCongestion(lineName, trainInfo.trainNum);
                 List<String> congestionList = Arrays.asList(congestionRate.split("\\|"));
                 statusMessages.add(trainInfo.nextStation + "으로 향하는 " + lineName + "호선 열차 " + trainInfo.trainNum + "의 실시간 혼잡도는 다음과 같습니다: " + congestionList);
             } else {
@@ -43,7 +44,7 @@ public class SubwayServiceImpl implements SubwayService {
                 if (Objects.equals(trainInfo.direction, "상행") || Objects.equals(trainInfo.direction, "내선")) {
                     direction = 0;
                 }
-                List<String> congestionList = SubwayInfo.subwayCongestionData(direction, trainInfo.stationCode, LocalDateTime.now().getMinute());
+                List<String> congestionList = subwayInfo.subwayCongestionData(direction, trainInfo.stationCode, LocalDateTime.now().getMinute());
                 statusMessages.add(trainInfo.nextStation + "으로 향하는 " + lineName + "호선 열차 " + trainInfo.trainNum + "의 예상 혼잡도는 다음과 같습니다: " + congestionList);
             }
         }

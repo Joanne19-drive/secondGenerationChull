@@ -17,12 +17,12 @@ import java.util.Objects;
 @Component
 public class SubwayInfo {
     @Value("${sk.subway.appKey}")
-    private static String skAppKey;
+    private String skAppKey;
 
     @Value("${seoul.subway.appKey}")
-    private static String seoulAppKey;
+    private String seoulAppKey;
 
-    static public String liveSubwayCongestion(String subwayLine, String trainCode) throws IOException {
+    public String liveSubwayCongestion(String subwayLine, String trainCode) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "https://apis.openapi.sk.com/puzzle/subway/congestion/rltm/trains/" + subwayLine + "/" + trainCode;
 
@@ -44,7 +44,7 @@ public class SubwayInfo {
         return JsonPath.read(body, "$.data.congestionResult.congestionCar");
     }
 
-    static public List<String> subwayCongestionData(int direction, String stationCode, int min) throws IOException {
+    public List<String> subwayCongestionData(int direction, String stationCode, int min) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "https://apis.openapi.sk.com/puzzle/subway/congestion/stat/car/stations/" + stationCode;
 
@@ -79,7 +79,7 @@ public class SubwayInfo {
     }
 
 
-    static public List<TrainInfo> stationArrival(String stationName) throws IOException {
+    public List<TrainInfo> stationArrival(String stationName) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "http://swopenAPI.seoul.go.kr/api/subway/" + seoulAppKey +"/json/realtimeStationArrival/0/15/" + stationName;
         System.out.println(apiUrl);
