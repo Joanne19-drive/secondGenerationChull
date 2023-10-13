@@ -52,6 +52,8 @@ jobs:
         docker build -t ${{ secrets.DOCKER_REPO }}
         docker push ${{ secrets.DOCKER_REPO }}
 
+      shell: bash
+
     - name: executing remote ssh commands using passowrd
       uses: appleboy/ssh-action@v0.1.6
       with:
