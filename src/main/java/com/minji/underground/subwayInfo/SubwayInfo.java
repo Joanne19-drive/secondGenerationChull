@@ -42,7 +42,6 @@ public class SubwayInfo {
         return JsonPath.read(body, "$.data.congestionResult.congestionCar");
     }
 
-    // 방향 체크 후 가져와야 함.
     static public List<String> subwayCongestionData(int direction, String stationCode, int min) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "https://apis.openapi.sk.com/puzzle/subway/congestion/stat/car/stations/" + stationCode;
@@ -97,6 +96,9 @@ public class SubwayInfo {
         for (Object train : trains) {
             String lineNum = JsonPath.read(train, "$.subwayId");
             boolean live = Objects.equals(lineNum, "1002") || lineNum.equals("1003");
+            if (lineNum.equals("1077")) {
+                continue;
+            }
 
             String ordkey = JsonPath.read(train, "$.ordkey");
             if (ordkey != null && ordkey.charAt(1) == '1') {
