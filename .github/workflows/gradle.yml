@@ -46,9 +46,9 @@ jobs:
       
     - name: web docker build and push
       run: |
-        touch ~/my_password.txt
+        touch ./my_password.txt
         echo "${{ secrets.DOCKER_PASSWORD }}" >> ./my_password.txt
-        cat ~/my_password.txt | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+        cat ./my_password.txt | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker build -t ${{ secrets.DOCKER_REPO }}
         docker push ${{ secrets.DOCKER_REPO }}
 
