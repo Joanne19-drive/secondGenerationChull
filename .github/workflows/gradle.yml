@@ -52,7 +52,7 @@ jobs:
 
     - name: web docker build and push
       run: |
-        docker build -t ${{ secrets.DOCKER_REPO }}
+        docker build -t ${{ secrets.DOCKER_REPO }} .
         docker push ${{ secrets.DOCKER_REPO }}
 
       shell: bash
