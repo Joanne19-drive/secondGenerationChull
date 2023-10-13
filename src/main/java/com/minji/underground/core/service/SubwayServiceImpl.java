@@ -85,7 +85,7 @@ public class SubwayServiceImpl implements SubwayService {
         } else if (text.equals("바보")) {
             return "는 너";
         } else if (text.equals("윤회")) {
-            return "솔로탈출 D-1";
+            return "솔로탈출 성공!";
         } else if (text.equals("상화")) {
             return "겸둥이 막내~";
         } else if (text.equals("승준")) {
