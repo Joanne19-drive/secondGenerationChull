@@ -40,14 +40,15 @@ jobs:
         touch ./application.properties
 
         # Secrets to application.properties
-        echo "{{ secrets.APPLICATION_SETTINGS }}" >> ./application.properties
+        echo "${{ secrets.APPLICATION_SETTINGS }}" >> ./application.properties
 
       shell: bash
       
     - name: web docker build and push
       run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }}
-        ${{ secrets.DOCKER_PASSWORD }}
+        touch ./password.txt
+        echo "${{ secrets.DOCKER_PASSWORD }}" >> ./password.txt
+        cat ./password.txt | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
         docker build -t ${{ secrets.DOCKER_REPO }}
         docker push ${{ secrets.DOCKER_REPO }}
 
