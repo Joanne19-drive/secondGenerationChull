@@ -6,8 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.util.List;
+import java.io.IOException;q
 import java.util.Map;
 
 @RestController
@@ -23,7 +22,7 @@ public class SubwayController {
     }
 
     @PostMapping("/subway")
-    public ResponseEntity<List<String>> liveSubwayStatus(@RequestParam String stationName) throws IOException {
+    public ResponseEntity<String> liveSubwayStatus(@RequestParam String stationName) throws IOException {
         return ResponseEntity.ok()
                 .body(subwayService.subwayCongestionData(stationName));
     }

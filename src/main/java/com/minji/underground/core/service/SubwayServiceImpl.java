@@ -25,31 +25,33 @@ public class SubwayServiceImpl implements SubwayService {
     }
 
     @Override
-    public List<String> subwayCongestionData(String stationName) throws IOException {
+    public String subwayCongestionData(String stationName) throws IOException {
         if (stationName.isEmpty()) {
             throw new IllegalArgumentException();
         }
         List<TrainInfo> arrivingTrains = subwayInfo.stationArrival(stationName);
 
-        ArrayList<String> statusMessages = new ArrayList<>();
+        StringBuffer statusMessages = new StringBuffer();
+        statusMessages.append("실시간 혼잡도");
 
         for (TrainInfo trainInfo : arrivingTrains) {
             String lineName = String.valueOf(trainInfo.lineNum.charAt(3));
             if (trainInfo.live) {
                 String congestionRate = subwayInfo.liveSubwayCongestion(lineName, trainInfo.trainNum);
                 List<String> congestionList = Arrays.asList(congestionRate.split("\\|"));
-                statusMessages.add(trainInfo.nextStation + "으로 향하는 " + lineName + "호선 열차 " + trainInfo.trainNum + "의 실시간 혼잡도는 다음과 같습니다: " + congestionList);
+                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(lineName).append("호선 열차 ")
+                        .append(trainInfo.trainNum).append("의 실시간 혼잡도는 다음과 같습니다: ").append(congestionList);
             } else {
                 int direction = 1;
                 if (Objects.equals(trainInfo.direction, "상행") || Objects.equals(trainInfo.direction, "내선")) {
                     direction = 0;
                 }
                 List<String> congestionList = subwayInfo.subwayCongestionData(direction, trainInfo.stationCode, LocalDateTime.now().getMinute());
-                statusMessages.add(trainInfo.nextStation + "으로 향하는 " + lineName + "호선 열차 " + trainInfo.trainNum + "의 예상 혼잡도는 다음과 같습니다: " + congestionList);
+                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(lineName).append("호선 열차 ").append(trainInfo.trainNum).append("의 예상 혼잡도는 다음과 같습니다: ").append(congestionList);
             }
         }
 
-        return statusMessages;
+        return statusMessages.toString();
     }
 
     @Override
@@ -60,7 +62,7 @@ public class SubwayServiceImpl implements SubwayService {
             String text = String.join(" ", Arrays.copyOfRange(textChunk, 1, textChunk.length));
             if (text.contains("지하철")) {
                 List<String> subwayRequest = Arrays.asList(text.split(" "));
-                String responseText = subwayCongestionData(subwayRequest.get(subwayRequest.size() - 1)).toString();
+                String responseText = subwayCongestionData(subwayRequest.get(subwayRequest.size() - 1));
                 slackJson.setResultText(responseText);
                 slackService.sendMessage(responseText);
             } else {

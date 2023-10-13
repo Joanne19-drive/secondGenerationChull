@@ -82,7 +82,6 @@ public class SubwayInfo {
     public List<TrainInfo> stationArrival(String stationName) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "http://swopenAPI.seoul.go.kr/api/subway/" + seoulAppKey +"/json/realtimeStationArrival/0/15/" + stationName;
-        System.out.println(apiUrl);
 
         Request request = new Request.Builder()
                 .url(apiUrl)
