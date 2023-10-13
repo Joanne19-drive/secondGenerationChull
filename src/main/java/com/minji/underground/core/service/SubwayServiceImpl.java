@@ -32,7 +32,7 @@ public class SubwayServiceImpl implements SubwayService {
         List<TrainInfo> arrivingTrains = subwayInfo.stationArrival(stationName);
 
         StringBuffer statusMessages = new StringBuffer();
-        statusMessages.append("실시간 혼잡도");
+        statusMessages.append("٩(๑❛ᴗ❛๑)۶ 실시간 혼잡도 ٩(๑❛ᴗ❛๑)۶ ");
 
         for (TrainInfo trainInfo : arrivingTrains) {
             String lineName = String.valueOf(trainInfo.lineNum.charAt(3));
