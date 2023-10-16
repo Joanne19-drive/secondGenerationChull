@@ -12,7 +12,7 @@ public class ResponseMap {
         inputToResponse.put("정신차려!", "노력하겠습니다.");
         inputToResponse.put("해고 당하고 싶어?", "갑질하지 마세오.");
         inputToResponse.put("바보", "는 너");
-        inputToResponse.put("윤회", "솔로탈출 성공!");
+        inputToResponse.put("윤회", "언제 솔탈할래?");
         inputToResponse.put("상화", "겸둥이 막내~");
         inputToResponse.put("승준", "살아..있으신가..요..?");
         inputToResponse.put("현지", "척척석사 그잡채");
@@ -36,7 +36,7 @@ public class ResponseMap {
         inputToResponse.put("3대철이를 만들려면 어떻게 해야 돼?", "일단 당신부터 없애겠습니다.");
         inputToResponse.put("2대철이에게 이승준이란?", "유일한 30대 또는 아홉수..또는 가이드..?");
         inputToResponse.put("배고파", "둥");
-        inputToResponse.put("너가 답할 수 있는 질문이 뭐야?", "제가 대답할 수 있는 단어는 [안녕?, 뭐해?, 정신차려!, 해고 당하고 싶어?, 바보, " +
+        inputToResponse.put("너가 답할 수 있는 질문이 뭐야?", "제가 대답할 수 있는 단어는 [지하철 {역이름}, 날씨 알려줘, 안녕?, 뭐해?, 정신차려!, 해고 당하고 싶어?, 바보, " +
                 "윤회, 상화, 승준, 현지, 민지, 비트박스, 메롱, 커리어팀, 달려!, 성공적, 고백에 성공하는 법, 에버랜드에서 재미있게 노는 법, 반가워, " +
                 "00 불러줘, 나한테 하고 싶은 말 없어?, 3대철이를 만들려면 어떻게 해야 돼?, 2대철이에게 이승준이란?, 배고파]입니다.");
     }

@@ -38,7 +38,6 @@ public class WeatherInfo {
 
         try {
             String body = response.body().string();
-            System.out.println(body);
             return JsonPath.read(body, "$.response.body.items.item[0].wfSv");
         } catch (Exception e){
             throw new CustomException(ErrorCode.WEATHER_SERVICE_UNAVAILABLE);

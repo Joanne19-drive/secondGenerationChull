@@ -37,6 +37,12 @@ public class SubwayController {
         }
     }
 
+    @GetMapping("/football")
+    public ResponseEntity<String> footballMatches() throws IOException {
+        return ResponseEntity.ok()
+                .body(subwayService.footballData());
+    }
+
     public void slackMessage(@RequestBody String message) {
         slackService.sendMessage(message);
     }
