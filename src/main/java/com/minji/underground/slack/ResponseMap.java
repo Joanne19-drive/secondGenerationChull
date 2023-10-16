@@ -32,6 +32,9 @@ public class ResponseMap {
         inputToResponse.put("승준 불러줘", "<@U058V83P8LU> 말고 그냥 승준 나와");
         inputToResponse.put("현지 불러줘", "<@U0595CLKC73>인 듯 정상 아닌 정상 같은 분~");
         inputToResponse.put("2대철이 불러줘", "뭐;;");
+        inputToResponse.put("나한테 하고 싶은 말 없어?", "저한테 뭘 바라시는지...");
+        inputToResponse.put("3대철이를 만들려면 어떻게 해야 돼?", "일단 당신부터 없애겠습니다.");
+        inputToResponse.put("2대철이에게 이승준이란?", "유일한 30대 또는 아홉수..또는 가이드..?");
     }
 
     public static String getValue(String key) {
