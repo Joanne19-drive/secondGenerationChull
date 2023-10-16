@@ -31,6 +31,7 @@ public class ResponseMap {
         inputToResponse.put("상화 불러줘", "<@U058V896M9A>야~? 어디니~?");
         inputToResponse.put("승준 불러줘", "<@U058V83P8LU> 말고 그냥 승준 나와");
         inputToResponse.put("현지 불러줘", "<@U0595CLKC73>인 듯 정상 아닌 정상 같은 분~");
+        inputToResponse.put("2대철이 불러줘", "뭐;;");
     }
 
     public static String getValue(String key) {
