@@ -105,6 +105,8 @@ public class SubwayServiceImpl implements SubwayService {
             return value;
         } else if (text.equals("반가워")) {
             return "<@" + userId + "> 님 반가워요";
+        } else if (userId.equals("U059GEF25DW")){
+            return "구윤회 같은 질문 금지";
         } else {
             return "그런 건 에이닷 프렌즈 친구들과 이야기해보지 않으실래요?";
         }
