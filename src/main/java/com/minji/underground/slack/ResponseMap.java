@@ -21,7 +21,7 @@ public class ResponseMap {
         inputToResponse.put("메롱", "유치한 건 이제 그만..");
         inputToResponse.put("커리어팀", "4명이 딱이지?");
         inputToResponse.put("달려!", "우다다다다다다다다");
-        inputToResponse.put("구윤회", "진실을 밝혀라 우우");
+        inputToResponse.put("구윤회", "나가라 우우");
         inputToResponse.put("성공적", "와칸다 포에버");
         inputToResponse.put("고백에 성공하는 법", "일단 해보고 말할래?");
         inputToResponse.put("에버랜드에서 재미있게 노는 법", "커리어팀과 함께 가기");

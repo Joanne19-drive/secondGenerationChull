@@ -27,7 +27,6 @@ public class FootballInfoImpl implements FootballInfo {
     public FootballInfoImpl(SlackService slackService) {
         this.slackService = slackService;
     }
-
     OkHttpClient client = new OkHttpClient();
 
     @Override
