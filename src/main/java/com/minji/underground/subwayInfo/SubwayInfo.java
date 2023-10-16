@@ -2,6 +2,8 @@ package com.minji.underground.subwayInfo;
 
 import com.jayway.jsonpath.JsonPath;
 import com.minji.underground.core.vo.TrainInfo;
+import com.minji.underground.exception.CustomException;
+import com.minji.underground.exception.ErrorCode;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -89,32 +91,37 @@ public class SubwayInfo {
 
         Response response = client.newCall(request).execute();
 
-        String body = response.body().string();
+        try {
 
-        List<Object> trains = JsonPath.read(body, "$.realtimeArrivalList.*");
+            String body = response.body().string();
 
-        ArrayList<TrainInfo> arrivingTrains = new ArrayList<TrainInfo>();
+            List<Object> trains = JsonPath.read(body, "$.realtimeArrivalList.*");
 
-        for (Object train : trains) {
-            String lineNum = JsonPath.read(train, "$.subwayId");
-            boolean live = Objects.equals(lineNum, "1002") || lineNum.equals("1003");
-            if (lineNum.equals("1077")) {
-                continue;
+            ArrayList<TrainInfo> arrivingTrains = new ArrayList<TrainInfo>();
+
+            for (Object train : trains) {
+                String lineNum = JsonPath.read(train, "$.subwayId");
+                boolean live = Objects.equals(lineNum, "1002") || lineNum.equals("1003");
+                if (lineNum.equals("1077")) {
+                    continue;
+                }
+
+                String ordkey = JsonPath.read(train, "$.ordkey");
+                if (ordkey != null && ordkey.charAt(1) == '1') {
+                    String direction = JsonPath.read(train, "$.updnLine");
+                    String trainWay = JsonPath.read(train, "$.trainLineNm");
+                    String nextStation = Arrays.asList(trainWay.split(" - ")).get(1);
+                    String trainNum = arrangeNum(lineNum, JsonPath.read(train, "$.btrainNo"));
+                    String stationId = JsonPath.read(train, "$.statnId");
+                    TrainInfo trainInfo = new TrainInfo(stationName, direction, lineNum, nextStation, trainNum, live, stationId.substring(stationId.length() - 3));
+                    arrivingTrains.add(trainInfo);
+                }
             }
 
-            String ordkey = JsonPath.read(train, "$.ordkey");
-            if (ordkey != null && ordkey.charAt(1) == '1') {
-                String direction = JsonPath.read(train, "$.updnLine");
-                String trainWay = JsonPath.read(train, "$.trainLineNm");
-                String nextStation = Arrays.asList(trainWay.split(" - ")).get(1);
-                String trainNum = arrangeNum(lineNum, JsonPath.read(train, "$.btrainNo"));
-                String stationId = JsonPath.read(train, "$.statnId");
-                TrainInfo trainInfo = new TrainInfo(stationName, direction, lineNum, nextStation, trainNum, live, stationId.substring(stationId.length() - 3));
-                arrivingTrains.add(trainInfo);
-            }
+            return arrivingTrains;
+        } catch (Exception e) {
+            throw new CustomException(ErrorCode.SUBWAY_SERVICE_UNAVAILABLE);
         }
-
-        return arrivingTrains;
     }
 
     private static String arrangeNum(String lineNum, String num) {

@@ -1,6 +1,8 @@
 package com.minji.underground.weatherInfo;
 
 import com.jayway.jsonpath.JsonPath;
+import com.minji.underground.exception.CustomException;
+import com.minji.underground.exception.ErrorCode;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -28,15 +30,18 @@ public class WeatherInfo {
         String apiUrl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidFcst?serviceKey=" + weatherAppKey +
                 "&pageNo=1&numOfRows=10&dataType=json&stnId=108&tmFc=" + formatedNow + "0600";
 
-        System.out.println(apiUrl);
         Request request = new Request.Builder()
                 .url(apiUrl)
                 .build();
 
         Response response = client.newCall(request).execute();
 
-        String body = response.body().string();
-        System.out.println(body);
-        return JsonPath.read(body, "$.response.body.items.item[0].wfSv");
+        try {
+            String body = response.body().string();
+            System.out.println(body);
+            return JsonPath.read(body, "$.response.body.items.item[0].wfSv");
+        } catch (Exception e){
+            throw new CustomException(ErrorCode.WEATHER_SERVICE_UNAVAILABLE);
+        }
     }
 }

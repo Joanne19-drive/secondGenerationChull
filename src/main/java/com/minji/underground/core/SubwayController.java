@@ -40,10 +40,4 @@ public class SubwayController {
     public void slackMessage(@RequestBody String message) {
         slackService.sendMessage(message);
     }
-
-//    @Scheduled(cron = "0 * * * * *")
-//    public void alarmSubwayStatus() throws IOException {
-//        String body = subwayService.liveSubwayStatus("을지로입구").toString();
-//        slackService.sendMessage(body);
-//    }
 }
