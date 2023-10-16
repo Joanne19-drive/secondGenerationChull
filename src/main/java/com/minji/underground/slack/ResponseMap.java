@@ -36,6 +36,10 @@ public class ResponseMap {
         inputToResponse.put("3대철이를 만들려면 어떻게 해야 돼?", "일단 당신부터 없애겠습니다.");
         inputToResponse.put("2대철이에게 이승준이란?", "유일한 30대 또는 아홉수..또는 가이드..?");
         inputToResponse.put("배고파", "둥");
+        inputToResponse.put("윤회 나가라", "아직 안나갔니?");
+        inputToResponse.put("철이 귀여워", "아잉~");
+        inputToResponse.put("철아 죽지마", "아직 살아 있어..");
+        inputToResponse.put("받은 메일함", "편지 1통이 도착하였습니다.");
         inputToResponse.put("편지 읽어줘", "안녕 커리어팀 친구들?\n다들 각자의 위치에서 나름 잘 적응하고 지내는 것 같아서 정말 다행이고 기쁘다. " +
                 "다만 구윤회는 정신줄을 좀 더 붙잡길 바라고, 승준은 심신의 안정을 찾길 바라고, 상화는 ..그래..잘 먹고 잘 자고, " +
                 "현지도 LG 우승을 같이 기원할게. 다들 건강하고 무사히 잘 지내고 11월에 만나자.");
