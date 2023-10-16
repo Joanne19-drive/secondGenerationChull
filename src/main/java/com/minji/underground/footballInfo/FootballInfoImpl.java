@@ -3,6 +3,7 @@ package com.minji.underground.footballInfo;
 import com.jayway.jsonpath.JsonPath;
 import com.minji.underground.exception.CustomException;
 import com.minji.underground.exception.ErrorCode;
+import com.minji.underground.slack.SlackService;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -20,6 +21,12 @@ import java.util.HashMap;
 public class FootballInfoImpl implements FootballInfo {
     @Value("${football.auth.token}")
     private String footballAuthKey;
+
+    private final SlackService slackService;
+
+    public FootballInfoImpl(SlackService slackService) {
+        this.slackService = slackService;
+    }
 
     OkHttpClient client = new OkHttpClient();
 
@@ -50,7 +57,42 @@ public class FootballInfoImpl implements FootballInfo {
         }
     }
 
+    @Override
+    public String matchResult(String teamName) throws IOException {
+        int teamId = getTeamId(teamName);
+        String apiUrl = "http://api.football-data.org//v4/teams/" + teamId + "/matches/?status=FINISHED&limit=1";
+
+        Request request = new Request.Builder()
+                .url(apiUrl)
+                .header("X-Auth-Token", footballAuthKey)
+                .header("Content-Type", "application/json")
+                .build();
+
+        Response response = client.newCall(request).execute();
+
+        try {
+            String body = response.body().string();
+            Object finishedMatch = JsonPath.read(body, "$.matches[0]");
+            String homeTeamName = JsonPath.read(finishedMatch, "@.homeTeam.name");
+            String awayTeamName = JsonPath.read(finishedMatch, "@.awayTeam.name");
+            String matchDate = JsonPath.read(finishedMatch, "@.utcDate");
+            Object score = JsonPath.read(finishedMatch, "@.score");
+            String winner = JsonPath.read(score, "@.winner");
+            int homeScore = JsonPath.read(score, "@.fullTime.home");
+            int awayScore = JsonPath.read(score, "@.fullTime.away");
+            if (winner.equals("AWAY_TEAM")) {
+                return homeTeamName + " " + homeScore + " : " + awayScore + " " + awayTeamName + " (WIN) at " + utcToGmt(matchDate) + "(GMT+9)";
+            } else {
+                return "(WIN) " + homeTeamName + " " + homeScore + " : " + awayScore + " " + awayTeamName + " at " + utcToGmt(matchDate) + "(GMT+9)";
+            }
+        } catch (Exception e) {
+            slackService.sendMessage(ErrorCode.FOOTBALL_SERVICE_UNAVAILABLE.getMessage());
+            throw new CustomException(ErrorCode.FOOTBALL_SERVICE_UNAVAILABLE);
+        }
+    }
+
     static HashMap<String, Integer> teamIdMap = new HashMap<>();
+
     static {
         teamIdMap.put("Arsenal FC", 57);
         teamIdMap.put("아스널", 57);
@@ -94,10 +136,11 @@ public class FootballInfoImpl implements FootballInfo {
         teamIdMap.put("본머스", 1044);
     }
 
-    private static int getTeamId(String teamName) {
+    private int getTeamId(String teamName) {
         if (teamIdMap.containsKey(teamName)) {
             return teamIdMap.get(teamName);
         } else {
+            slackService.sendMessage("팀 이름이 유효하지 않습니다.");
             throw new IllegalArgumentException("팀 이름이 유효하지 않습니다.");
         }
     }

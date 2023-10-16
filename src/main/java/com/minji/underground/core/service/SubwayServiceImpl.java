@@ -81,6 +81,11 @@ public class SubwayServiceImpl implements SubwayService {
                 String responseText = footballInfo.findUpcomingMatch(footballRequest.get(0));
                 slackJson.setResultText(responseText);
                 slackService.sendMessage(responseText);
+            } else if (text.contains("경기 결과 알려줘")) {
+                List<String> footballRequest = Arrays.asList(text.split(" "));
+                String responseText = footballInfo.matchResult(footballRequest.get(0));
+                slackJson.setResultText(responseText);
+                slackService.sendMessage(responseText);
             } else {
                 String responseText = responseAnything(text, slackJson.getUser());
                 slackJson.setResultText(responseText);
