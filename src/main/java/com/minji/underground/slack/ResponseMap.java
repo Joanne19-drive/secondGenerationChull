@@ -26,6 +26,8 @@ public class ResponseMap {
         inputToResponse.put("고백에 성공하는 법", "일단 해보고 말할래?");
         inputToResponse.put("에버랜드에서 재미있게 노는 법", "커리어팀과 함께 가기");
         inputToResponse.put("떠나요 둘이서~", "모든 걸 훌훌 버리고~");
+        inputToResponse.put("윤회 불러줘", "<@U059GEF25DW>야 너를 찾는다");
+        inputToResponse.put("민지 불러줘", "<@U0595CLN20Z>님 당신을 찾습니다");
     }
 
     public static String getValue(String key) {
