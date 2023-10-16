@@ -35,6 +35,7 @@ public class ResponseMap {
         inputToResponse.put("나한테 하고 싶은 말 없어?", "저한테 뭘 바라시는지...");
         inputToResponse.put("3대철이를 만들려면 어떻게 해야 돼?", "일단 당신부터 없애겠습니다.");
         inputToResponse.put("2대철이에게 이승준이란?", "유일한 30대 또는 아홉수..또는 가이드..?");
+        inputToResponse.put("배고파", "둥");
     }
 
     public static String getValue(String key) {
