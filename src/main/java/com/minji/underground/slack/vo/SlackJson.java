@@ -1,4 +1,4 @@
-package com.minji.underground.core.vo;
+package com.minji.underground.slack.vo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

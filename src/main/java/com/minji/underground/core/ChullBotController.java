@@ -1,6 +1,6 @@
 package com.minji.underground.core;
 
-import com.minji.underground.core.service.SubwayService;
+import com.minji.underground.core.service.ChullService;
 import com.minji.underground.slack.SlackService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,20 +11,14 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
-public class SubwayController {
+public class ChullBotController {
 
-    private final SubwayService subwayService;
+    private final ChullService subwayService;
     private final SlackService slackService;
 
-    public SubwayController(SubwayService subwayService, SlackService slackService) {
+    public ChullBotController(ChullService subwayService, SlackService slackService) {
         this.subwayService = subwayService;
         this.slackService = slackService;
-    }
-
-    @PostMapping("/subway")
-    public ResponseEntity<String> liveSubwayStatus(@RequestParam String stationName) throws IOException {
-        return ResponseEntity.ok()
-                .body(subwayService.subwayCongestionData(stationName));
     }
 
     @PostMapping("/slack/event")
@@ -37,12 +31,7 @@ public class SubwayController {
         }
     }
 
-    @GetMapping("/football")
-    public ResponseEntity<String> footballMatches() throws IOException {
-        return ResponseEntity.ok()
-                .body(subwayService.footballData());
-    }
-
+    @PostMapping("/slack/message")
     public void slackMessage(@RequestBody String message) {
         slackService.sendMessage(message);
     }

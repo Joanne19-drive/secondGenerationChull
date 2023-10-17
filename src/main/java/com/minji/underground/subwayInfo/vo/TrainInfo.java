@@ -1,4 +1,4 @@
-package com.minji.underground.core.vo;
+package com.minji.underground.subwayInfo.vo;
 
 import lombok.AllArgsConstructor;
 
