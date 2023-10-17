@@ -52,7 +52,7 @@ public class ChullServiceImpl implements ChullService {
                 responseText = slackService.responseAnything(text, slackJson.getUser());
             }
             slackJson.setResultText(responseText);
-//            slackService.sendMessage(responseText);
+            slackService.sendMessage(responseText);
         }
         slackJson.setJson();
         return slackJson.getJson();
