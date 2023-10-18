@@ -7,6 +7,7 @@ public class TrainInfo {
     public String stationName;
     public String direction;
     public String lineNum;
+    public String lastStation;
     public String nextStation;
     public String trainNum;
     public Boolean live;

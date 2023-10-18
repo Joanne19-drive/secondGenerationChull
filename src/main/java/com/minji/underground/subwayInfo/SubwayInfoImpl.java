@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
-public class SubwayInfoImpl implements SubwayInfo{
+public class SubwayInfoImpl implements SubwayInfo {
     @Value("${sk.subway.appKey}")
     private String skAppKey;
 
@@ -37,15 +38,18 @@ public class SubwayInfoImpl implements SubwayInfo{
             if (trainInfo.live) {
                 String congestionRate = liveSubwayCongestion(lineName, trainInfo.trainNum);
                 List<String> congestionList = Arrays.asList(congestionRate.split("\\|"));
-                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(lineName).append("호선 열차 ")
+                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(trainInfo.lastStation)
+                        .append(" ").append(lineName).append("호선 열차 ")
                         .append(trainInfo.trainNum).append("의 실시간 혼잡도는 다음과 같습니다: ").append(congestionList);
             } else {
                 int direction = 1;
                 if (Objects.equals(trainInfo.direction, "상행") || Objects.equals(trainInfo.direction, "내선")) {
                     direction = 0;
                 }
-                List<String> congestionList = staticSubwayCongestion(direction, trainInfo.stationCode, LocalDateTime.now().getMinute());
-                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(lineName).append("호선 열차 ").append(trainInfo.trainNum).append("의 예상 혼잡도는 다음과 같습니다: ").append(congestionList);
+                List<String> congestionList = staticSubwayCongestion(direction, trainInfo.lastStation, trainInfo.stationCode, LocalDateTime.now().getMinute());
+                statusMessages.append("\n").append(trainInfo.nextStation).append("으로 향하는 ").append(trainInfo.lastStation)
+                        .append(" ").append(lineName).append("호선 열차 ").append(trainInfo.trainNum)
+                        .append("의 예상 혼잡도는 다음과 같습니다: ").append(congestionList);
             }
         }
 
@@ -76,7 +80,7 @@ public class SubwayInfoImpl implements SubwayInfo{
     }
 
     @Override
-    public List<String> staticSubwayCongestion(int direction, String stationCode, int min) throws IOException {
+    public List<String> staticSubwayCongestion(int direction, String lastStation, String stationCode, int min) throws IOException {
         OkHttpClient client = new OkHttpClient();
         String apiUrl = "https://apis.openapi.sk.com/puzzle/subway/congestion/stat/car/stations/" + stationCode;
 
@@ -96,24 +100,29 @@ public class SubwayInfoImpl implements SubwayInfo{
         int checkMin = min / 10;
 
         List<Object> status = JsonPath.read(body, "$.contents.stat.*");
-        List<String> result = null;
+        List<Integer> result = null;
+        lastStation = lastStation.substring(0, lastStation.length()-1);
         for (Object s : status) {
             int updnLine = JsonPath.read(s, "$.updnLine");
-            if (Objects.equals(direction, updnLine)) {
+            String endStation = JsonPath.read(s, "$.endStationName");
+            if (Objects.equals(direction, updnLine) && lastStation.equals(endStation.substring(0, endStation.length()-1))) {
                 result = JsonPath.read(s, String.format("$.data[%d].congestionCar.*", checkMin));
-                if (!Objects.equals(result.get(0), "0")) {
+                Integer firstNum = result.get(0);
+                if (!firstNum.equals(0)) {
                     break;
                 }
             }
         }
-
-        return result;
+        if (result == null) {
+            return Collections.singletonList("제공할 수 없는 데이터입니다");
+        }
+        return result.stream().map(Object::toString).collect(Collectors.toList());
     }
 
     @Override
     public List<TrainInfo> stationArrival(String stationName) throws IOException {
         OkHttpClient client = new OkHttpClient();
-        String apiUrl = "http://swopenAPI.seoul.go.kr/api/subway/" + seoulAppKey +"/json/realtimeStationArrival/0/15/" + stationName;
+        String apiUrl = "http://swopenAPI.seoul.go.kr/api/subway/" + seoulAppKey + "/json/realtimeStationArrival/0/15/" + stationName;
 
         Request request = new Request.Builder()
                 .url(apiUrl)
@@ -140,10 +149,11 @@ public class SubwayInfoImpl implements SubwayInfo{
                 if (ordkey != null && ordkey.charAt(1) == '1') {
                     String direction = JsonPath.read(train, "$.updnLine");
                     String trainWay = JsonPath.read(train, "$.trainLineNm");
+                    String lastStation = Arrays.asList(trainWay.split(" - ")).get(0);
                     String nextStation = Arrays.asList(trainWay.split(" - ")).get(1);
                     String trainNum = arrangeNum(lineNum, JsonPath.read(train, "$.btrainNo"));
                     String stationId = JsonPath.read(train, "$.statnId");
-                    TrainInfo trainInfo = new TrainInfo(stationName, direction, lineNum, nextStation, trainNum, live, stationId.substring(stationId.length() - 3));
+                    TrainInfo trainInfo = new TrainInfo(stationName, direction, lineNum, lastStation, nextStation, trainNum, live, stationId.substring(stationId.length() - 3));
                     arrivingTrains.add(trainInfo);
                 }
             }
