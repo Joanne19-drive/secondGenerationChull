@@ -1,5 +1,5 @@
 # 2대철이
-<img src="https://github.com/Joanne19-drive/secondGenerationChull/assets/84649662/4ca5e069-b84c-4d71-aa1c-2566d6a3954c" width="500"/>
+<img src="https://github.com/Joanne19-drive/secondGenerationChull/assets/84649662/e6c9b741-35bb-4b29-b60f-e10bedbb6946" width="500"/>
 
 ## 프로젝트 설명
 * slack에서 사용하는 봇 만들기 ~~(1대철이의 폐기 이후 호기롭게 등장한 2대철이)~~
