@@ -13,18 +13,18 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class ChullBotController {
 
-    private final ChullService subwayService;
+    private final ChullService chullService;
     private final SlackService slackService;
 
-    public ChullBotController(ChullService subwayService, SlackService slackService) {
-        this.subwayService = subwayService;
+    public ChullBotController(ChullService chullService, SlackService slackService) {
+        this.chullService = chullService;
         this.slackService = slackService;
     }
 
     @PostMapping("/slack/event")
     public ResponseEntity<String> event(@RequestBody Map<String, Object> data) {
         try {
-            String result = subwayService.slackEvent(data);
+            String result = chullService.slackEvent(data);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (IOException e) {
             return new ResponseEntity<>(e.getCause().toString(), HttpStatus.BAD_REQUEST);
