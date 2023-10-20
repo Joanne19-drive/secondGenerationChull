@@ -14,7 +14,7 @@ public class ResponseMap {
         inputToResponse.put("바보", "는 너");
         inputToResponse.put("윤회", "언제 솔탈할래?");
         inputToResponse.put("상화", "겸둥이 막내~");
-        inputToResponse.put("승준", "살아..있으신가..요..?");
+        inputToResponse.put("승준", "젊다 젊어~ (자화자찬)");
         inputToResponse.put("현지", "척척석사 그잡채");
         inputToResponse.put("민지", "철이 유니버스 창시자");
         inputToResponse.put("비트박스", "움치키둠치키 치기지기 자가자가장");
