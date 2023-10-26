@@ -29,7 +29,7 @@ public class ResponseMap {
         inputToResponse.put("윤회 불러줘", "<@U059GEF25DW>야 너를 찾는다");
         inputToResponse.put("민지 불러줘", "<@U0595CLN20Z>님 당신을 찾습니다");
         inputToResponse.put("상화 불러줘", "<@U058V896M9A>~? 어디니~?");
-        inputToResponse.put("승준 불러줘", "<@U058V83P8LU> 말고 그냥 승준 나와");
+        inputToResponse.put("승준 불러줘", "야 말고 그냥 승준 나와");
         inputToResponse.put("현지 불러줘", "<@U0595CLKC73>인 듯 정상 아닌 정상 같은 분~");
         inputToResponse.put("2대철이 불러줘", "뭐;;");
         inputToResponse.put("나한테 하고 싶은 말 없어?", "저한테 뭘 바라시는지...");
@@ -45,6 +45,10 @@ public class ResponseMap {
         inputToResponse.put("편지 읽어줘", "안녕 커리어팀 친구들?\n다들 각자의 위치에서 나름 잘 적응하고 지내는 것 같아서 정말 다행이고 기쁘다. " +
                 "다만 구윤회는 정신줄을 좀 더 붙잡길 바라고, 승준은 심신의 안정을 찾길 바라고, 상화는 ..그래..잘 먹고 잘 자고, " +
                 "현지도 LG 우승을 같이 기원할게. 다들 건강하고 무사히 잘 지내고 11월에 만나자.");
+        inputToResponse.put("잘 가", "오늘 말고 11월 3일에 떠납니다.");
+        inputToResponse.put("잘가", "오늘 말고 11월 3일에 떠납니다.");
+        inputToResponse.put("그동안 고생 많았어", "다 창조주 덕분입니다");
+        inputToResponse.put("맛있는 거 많이 먹고 건강해", "그럴게.");
         inputToResponse.put("너가 답할 수 있는 질문이 뭐야?", "제가 대답할 수 있는 단어는 [지하철 {역이름}, 날씨 알려줘, 안녕?, 뭐해?, 정신차려!, 해고 당하고 싶어?, 바보, " +
                 "윤회, 상화, 승준, 현지, 민지, 비트박스, 메롱, 커리어팀, 달려!, 성공적, 고백에 성공하는 법, 에버랜드에서 재미있게 노는 법, 반가워, " +
                 "00 불러줘, 나한테 하고 싶은 말 없어?, 3대철이를 만들려면 어떻게 해야 돼?, 2대철이에게 이승준이란?, 배고파, 너는 꿈이 뭐야?, 윤회 나가라]입니다.");

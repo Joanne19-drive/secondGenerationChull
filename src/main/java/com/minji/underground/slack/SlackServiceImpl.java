@@ -31,6 +31,10 @@ public class SlackServiceImpl implements SlackService {
 
     @Override
     public String responseAnything(String text, String userId) {
+        if (userId.equals("U058V83P8LU")) {
+            return "이승준 넌 제명이야";
+        }
+
         String value = ResponseMap.getValue(text);
 
         if (value != null) {
